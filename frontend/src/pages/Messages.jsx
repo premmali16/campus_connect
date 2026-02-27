@@ -19,7 +19,8 @@ const Messages = () => {
 
     useEffect(() => {
         fetchConversations();
-        socketRef.current = io(window.location.origin, { withCredentials: true });
+        const socketUrl = import.meta.env.VITE_SOCKET_URL || window.location.origin;
+        socketRef.current = io(socketUrl, { withCredentials: true });
         socketRef.current.emit('user_online', user?._id);
         socketRef.current.on('receive_message', (msg) => {
             setMessages((prev) => [...prev, msg]);

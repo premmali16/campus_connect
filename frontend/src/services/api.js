@@ -5,7 +5,7 @@ import axios from 'axios';
  * Automatically attaches JWT token and handles auth errors
  */
 const API = axios.create({
-    baseURL: '/api',
+    baseURL: 'https://campus-connect-fktx.onrender.com/api',
     headers: {
         'Content-Type': 'application/json',
     },

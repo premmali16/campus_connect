@@ -3,7 +3,8 @@ node_modules/
 
 # Environment variables (IMPORTANT)
 .env
-.env.*
+.env.local
+.env.production
 
 # Logs
 logs/
@@ -39,4 +40,4 @@ Thumbs.db
 .idea/
 
 # Optional (keep if working in team)
-package-lock.json
+# package-lock.json

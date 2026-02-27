@@ -1,5 +1,6 @@
 const Opportunity = require('../models/Opportunity');
 const User = require('../models/User');
+const { uploadToCloudinary } = require('../middleware/upload');
 
 /**
  * @desc    Create an opportunity
@@ -24,7 +25,7 @@ const createOpportunity = async (req, res, next) => {
         };
 
         if (req.file) {
-            opportunityData.image = `/uploads/${req.file.filename}`;
+            opportunityData.image = await uploadToCloudinary(req.file, 'campus-connect/opportunities');
         }
 
         const opportunity = await Opportunity.create(opportunityData);

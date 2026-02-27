@@ -1,6 +1,7 @@
 const Message = require('../models/Message');
 const Conversation = require('../models/Conversation');
 const User = require('../models/User');
+const { uploadToCloudinary } = require('../middleware/upload');
 
 /**
  * @desc    Get or create a 1-on-1 conversation
@@ -92,7 +93,7 @@ const sendMessage = async (req, res, next) => {
         };
 
         if (req.file) {
-            messageData.fileUrl = `/uploads/${req.file.filename}`;
+            messageData.fileUrl = await uploadToCloudinary(req.file, 'campus-connect/messages');
             messageData.fileName = req.file.originalname;
             messageData.messageType = 'file';
         }

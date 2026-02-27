@@ -8,9 +8,20 @@ const onlineUsers = new Map();
  * Handles: chat, typing indicators, online status, notifications
  */
 const initSocket = (server) => {
+    const allowedOrigins = [
+        process.env.CLIENT_URL || 'https://campus-connect-mu-dun.vercel.app',
+        'http://localhost:5173',
+        'http://localhost:3000',
+    ];
     const io = new Server(server, {
         cors: {
-            origin: process.env.CLIENT_URL || 'http://localhost:5173',
+            origin: function (origin, callback) {
+                if (!origin) return callback(null, true);
+                if (allowedOrigins.includes(origin)) {
+                    return callback(null, true);
+                }
+                return callback(new Error('Not allowed by CORS'));
+            },
             methods: ['GET', 'POST'],
             credentials: true,
         },

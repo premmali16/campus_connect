@@ -1,5 +1,6 @@
 const Resource = require('../models/Resource');
 const User = require('../models/User');
+const { uploadToCloudinary } = require('../middleware/upload');
 
 /**
  * @desc    Upload/Create a resource
@@ -22,7 +23,7 @@ const createResource = async (req, res, next) => {
         };
 
         if (req.file) {
-            resourceData.fileUrl = `/uploads/${req.file.filename}`;
+            resourceData.fileUrl = await uploadToCloudinary(req.file, 'campus-connect/resources');
         }
 
         const resource = await Resource.create(resourceData);

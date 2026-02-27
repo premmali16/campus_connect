@@ -1,6 +1,7 @@
 const Group = require('../models/Group');
 const Conversation = require('../models/Conversation');
 const User = require('../models/User');
+const { uploadToCloudinary } = require('../middleware/upload');
 
 /**
  * @desc    Create a study group
@@ -24,7 +25,7 @@ const createGroup = async (req, res, next) => {
         });
 
         if (req.file) {
-            group.avatar = `/uploads/${req.file.filename}`;
+            group.avatar = await uploadToCloudinary(req.file, 'campus-connect/groups');
             await group.save();
         }
 

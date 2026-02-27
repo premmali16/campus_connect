@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const { uploadToCloudinary } = require('../middleware/upload');
 
 /**
  * @desc    Get user profile by ID
@@ -53,7 +54,7 @@ const updateProfile = async (req, res, next) => {
 
         // Handle file upload for avatar
         if (req.file) {
-            updates.avatar = `/uploads/${req.file.filename}`;
+            updates.avatar = await uploadToCloudinary(req.file, 'campus-connect/avatars');
         }
 
         const user = await User.findByIdAndUpdate(req.user._id, updates, {

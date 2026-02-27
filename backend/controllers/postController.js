@@ -1,6 +1,7 @@
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
 const User = require('../models/User');
+const { uploadToCloudinary } = require('../middleware/upload');
 
 /**
  * @desc    Create a new post
@@ -20,7 +21,7 @@ const createPost = async (req, res, next) => {
         };
 
         if (req.file) {
-            postData.image = `/uploads/${req.file.filename}`;
+            postData.image = await uploadToCloudinary(req.file, 'campus-connect/posts');
         }
 
         const post = await Post.create(postData);
@@ -152,7 +153,7 @@ const updatePost = async (req, res, next) => {
         if (req.body.content) updates.content = req.body.content;
         if (req.body.tags) updates.tags = typeof req.body.tags === 'string' ? req.body.tags.split(',').map((t) => t.trim()) : req.body.tags;
         if (req.body.category) updates.category = req.body.category;
-        if (req.file) updates.image = `/uploads/${req.file.filename}`;
+        if (req.file) updates.image = await uploadToCloudinary(req.file, 'campus-connect/posts');
 
         post = await Post.findByIdAndUpdate(req.params.id, updates, {
             new: true,
